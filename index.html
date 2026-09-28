@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Untuk Chase</title>
+<style>
+@font-face{font-family:'FontSurat';src:url('fontku.ttf') format('truetype');font-display:swap}
+:root{--ink:#3b2a1e;--paper:#f3e9d6;--yellow:#ffd84a;--E:min(72vw,320px)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:#3a2616}
+body{background:transparent}
+body{font-family:'FontSurat','Segoe Print','Bradley Hand',cursive;color:var(--ink);overflow-x:hidden}
+body.locked{overflow:hidden;height:100%}
+/* meja kayu */
+.desk{position:fixed;inset:0;z-index:-1;background:#6b4426 url('meja.jpg') center/cover no-repeat}
+
+/* ===== INTRO PIANO ===== */
+#intro{position:fixed;inset:0;z-index:100;background:#111;touch-action:manipulation;overflow:hidden;transition:opacity 1.6s ease,transform 1.6s ease}
+#intro.out{opacity:0;transform:scale(1.6);pointer-events:none}
+#piano{position:absolute;inset:0;display:flex}
+.wk{flex:1;background:linear-gradient(#fff,#ece6da);border:1px solid #444;border-radius:0 0 8px 8px;transition:background .15s,transform .15s;user-select:none}
+.wk.on{background:#e2d6bd;transform:translateY(3px)}
+.bk{position:absolute;top:0;height:62%;width:5%;transform:translateX(-50%);background:linear-gradient(#333,#000);border-radius:0 0 6px 6px;z-index:2;user-select:none;transition:transform .15s}
+.bk.on{transform:translateX(-50%) translateY(3px);background:#222}
+#wash{position:absolute;inset:0;z-index:5;background:var(--paper);opacity:0;pointer-events:none;transition:opacity 1.2s ease}
+#wash.show{opacity:1;pointer-events:auto}
+.note{position:fixed;z-index:6;color:#111;pointer-events:none;left:0;top:0;opacity:0;
+  animation:burst 2.4s cubic-bezier(.15,.7,.3,1) forwards}
+@keyframes burst{
+  0%{opacity:0;transform:translate(var(--x),var(--y)) scale(.2) rotate(0)}
+  12%{opacity:1}
+  100%{opacity:.9;transform:translate(calc(var(--x) + var(--dx)),calc(var(--y) + var(--dy))) scale(var(--s)) rotate(var(--r))}}
+
+/* ===== SURAT ===== */
+main{opacity:0;visibility:hidden}
+main.show{opacity:1;visibility:visible}
+.wrap{max-width:640px;margin:0 auto;padding:max(28px,env(safe-area-inset-top)) 16px 40px}
+.letter{position:relative;padding:34px 26px 38px;background:var(--paper) url('kertas.jpg') center/cover;
+  border-radius:3px;box-shadow:0 2px 3px rgba(0,0,0,.35),0 18px 40px rgba(0,0,0,.45);
+  transform:translateY(-130vh) rotate(-1.4deg);font-size:clamp(1.15rem,4.6vw,1.45rem);line-height:1.75}
+main.show .letter{animation:drop 1.7s cubic-bezier(.3,.1,.4,1) forwards}
+@keyframes drop{
+  0%{transform:translateY(-130vh) rotate(-8deg)}
+  50%{transform:translateY(0) rotate(-1.4deg)}
+  64%{transform:translateY(-34px) rotate(-1deg)}
+  76%{transform:translateY(0) rotate(-1.6deg)}
+  86%{transform:translateY(-11px) rotate(-1.3deg)}
+  100%{transform:translateY(0) rotate(-1.4deg)}}
+.letter h1{font-size:1.7em;font-weight:normal;margin-bottom:.5em;line-height:1.2}
+.letter p{margin-bottom:1em}
+.letter .sign{text-align:right;margin:1.2em 0 0;font-size:1.25em}
+.tape{position:absolute;top:-12px;left:50%;width:110px;height:28px;transform:translateX(-50%) rotate(2deg);background:rgba(240,225,170,.75);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+
+/* ===== POLAROID ===== */
+.stage{position:relative;height:560px;margin-top:34px}
+.pola{position:absolute;width:min(46vw,190px);padding:0;background:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.45));
+  touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;transition:filter .2s;z-index:1}
+.pola img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-drag:none}
+.pola.lift{cursor:grabbing;filter:drop-shadow(0 16px 16px rgba(0,0,0,.5));transition:filter .2s}
+.hint{text-align:center;color:#f3e9d6;opacity:.8;font-size:1.05rem;margin-top:8px}
+
+/* ===== LUAR ANGKASA ===== */
+#space{position:relative;background:#000;overflow:hidden;padding:64px 16px 90px;text-align:center;margin-top:20px}
+.star{position:absolute;background:#fff;animation:twinkle var(--d) ease-in-out infinite;animation-delay:var(--dl)}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:1}}
+#space h2{position:relative;z-index:2;color:var(--yellow);font-weight:normal;font-size:clamp(1.6rem,7vw,2.4rem);line-height:1.25;
+  text-shadow:2px 2px 0 #b8801a,0 0 18px rgba(255,216,74,.45)}
+#orbit{position:relative;z-index:2;width:var(--E);height:var(--E);margin:calc(var(--E) * .32 + 20px) auto 0}
+#earth{width:100%;height:100%;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px #1b2a55,0 0 40px rgba(80,140,255,.4)}
+#earth img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated;display:block}
+#walker{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(0deg)}
+#body{position:absolute;left:-32px;bottom:calc(var(--E) / 2 - 5px);width:64px;height:64px;cursor:pointer;touch-action:manipulation}
+#body img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;display:block;pointer-events:none;-webkit-user-drag:none;transition:transform .15s}
+#body.walking{animation:bounce .32s ease-in-out infinite}
+#body.jump{animation:jump .6s cubic-bezier(.3,.7,.4,1)}
+@keyframes bounce{50%{transform:translateY(-6px)}}
+@keyframes jump{0%,100%{transform:translateY(0)}45%{transform:translateY(-52px) scale(1.08)}}
+.ctrl{position:relative;z-index:2;display:flex;justify-content:center;gap:34px;margin-top:38px}
+.ctrl button{width:66px;height:66px;font:inherit;font-size:1.9rem;color:#000;background:var(--yellow);border:0;border-radius:14px;
+  box-shadow:0 5px 0 #b8801a;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.ctrl button:active,.ctrl button.hold{transform:translateY(4px);box-shadow:0 1px 0 #b8801a}
+.float{position:fixed;z-index:60;pointer-events:none;font-size:1.5rem;color:#fff;white-space:nowrap;text-shadow:0 0 8px #ff7aa8;
+  animation:floatUp 1.6s ease-out forwards}
+@keyframes floatUp{from{opacity:1;transform:translate(-50%,0) scale(.6)}to{opacity:0;transform:translate(calc(-50% + var(--dx)),-130px) scale(1.2)}}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.star{animation:none;opacity:.7}}
+</style>
+</head>
+<body class="locked">
+<div class="desk"></div>
+
+<!-- Intro piano -->
+<div id="intro" aria-label="Piano. Tekan tuts mana saja.">
+  <div id="piano"></div>
+  <div id="wash"></div>
+</div>
+
+<main id="main">
+  <div class="wrap">
+    <article class="letter">
+      <span class="tape"></span>
+      <h1>My Dearest, Aca</h1>
+      <p>Ca, I’m sorry I didn’t use Mati Suri di Taman by Sore. I chose Liz on Top of the World instead because I know how much you love it, and I wanted to use something that reminds me of you. Maybe it’s a little cheesy, but I like knowing that whenever you hear it, there’s a little piece of me attached to something you already love.</p>
+   
+      <p>You’re always writing things for me, editing me into your little texts, turning random moments into something worth keeping. You somehow always know how to put me into words better than I ever could myself. You can be my writer, and I’ll be your inspiration, but I don’t want to be just another thing you write about. I want to be part of your whole story. Your favorite chapter, your best line, the person you keep coming back to no matter how the story goes.</p>
+      <p> And if you’re Liz on top of the world, then I’ll be right there beside you. I’ll be your Darcy when you need one, your favorite person to come home to, and maybe even the reason you keep writing a little longer. Let me be somewhere in every page, even if it’s just a small sentence you never want to erase.</p>
+      <p> You’ve given me so many words, so many little things to keep, and more reasons to smile than you probably realize. So this time, let me give you something back. I want you to know that I’m ridiculously, hopelessly, and completely in love with you. And if I had to choose where I’d want to be in this whole damn world, I’d choose right beside you, on top of the world, watching the person I love most exist exactly as he is. </p>
+   <p> So keep writing, Chase. I’ll keep giving you reasons to write. </p>
+      <p class="sign">Simon, ♥</p>
+    </article>
+
+    <section class="stage" id="stage" aria-label="Foto polaroid"></section>
+    <p class="hint">Banyak foto prabs yang bisa kamu mainin ndut</p>
+  </div>
+
+  <section id="space">
+    <h2>Chase, You're on Top of the World</h2>
+    <div id="orbit">
+      <div id="earth"><img id="earthImg" src="bumi.jpg" alt="Bumi pixel"></div>
+      <div id="walker"><div id="body" role="button" aria-label="Chase, sentuh untuk melompat"><img id="chase" src="chase.png" alt="Chase"></div></div>
+    </div>
+    <div class="ctrl">
+      <button id="left" aria-label="Jalan ke kiri">&lt;</button>
+      <button id="right" aria-label="Jalan ke kanan">&gt;</button>
+    </div>
+  </section>
+</main>
+
+<audio id="bgm" src="lagu.mp3" loop preload="auto"></audio>
+
+<script>
+(() => {
+  'use strict';
+  const $ = s => document.querySelector(s);
+  const rand = (a, b) => Math.random() * (b - a) + a;
+
+  /* ---------- Audio piano (Web Audio API) ---------- */
+  let ctx = null;
+  const scale = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25, 783.99, 880.0]; // pentatonik C
+  function ding() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === 'suspended') ctx.resume();
+    const f = scale[Math.floor(Math.random() * scale.length)], t = ctx.currentTime;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(.32, t + .01);
+    g.gain.exponentialRampToValueAtTime(.0008, t + 2.2);
+    g.connect(ctx.destination);
+    [[1, 'sine', 1], [2, 'triangle', .35], [3, 'sine', .12]].forEach(([m, type, v]) => {
+      const o = ctx.createOscillator(), og = ctx.createGain();
+      o.type = type; o.frequency.value = f * m; og.gain.value = v;
+      o.connect(og); og.connect(g); o.start(t); o.stop(t + 2.3);
+    });
+  }
+
+  /* ---------- Piano ---------- */
+  const piano = $('#piano'), N = 14;
+  for (let i = 0; i < N; i++) {
+    const k = document.createElement('div'); k.className = 'wk'; piano.appendChild(k);
+  }
+  [0, 1, 3, 4, 5].forEach(p => {
+    for (let o = 0; o < 2; o++) {
+      const b = document.createElement('div'); b.className = 'bk';
+      b.style.left = ((o * 7 + p + 1) / N * 100) + '%'; piano.appendChild(b);
+    }
+  });
+
+  let started = false;
+  const bgm = $('#bgm');
+  function playMusic() {
+    if (!bgm.paused) return;
+    try { bgm.volume = 0; } catch (_) {}
+    const p = bgm.play(); if (p && p.catch) p.catch(() => {});
+  }
+  // Di HP, izin audio kadang baru diberikan saat jari diangkat, jadi coba lagi sampai berhasil
+  ['pointerup', 'touchend', 'click'].forEach(ev =>
+    addEventListener(ev, () => { if (started && bgm.paused) { playMusic(); fadeIn(bgm); } }, { passive: true }));
+  function start(e) {
+    if (started) return;
+    started = true;
+    const key = e.target.closest('.wk,.bk'); if (key) key.classList.add('on');
+    ding();
+    // Musik dibuka saat sentuhan pertama (aturan browser mobile), volume naik nanti
+    playMusic();
+    $('#wash').classList.add('show');
+    burst(e.clientX, e.clientY);
+    setTimeout(() => { $('#intro').classList.add('out'); playMusic(); fadeIn($('#bgm')); }, 2300);
+    setTimeout(() => {
+      $('#intro').remove(); document.body.classList.remove('locked');
+      $('#main').classList.add('show'); layoutPolas();
+    }, 3900);
+  }
+  piano.addEventListener('pointerdown', start);
+
+  function burst(cx, cy) {
+    const sym = ['♪', '♫', '♬', '♩', '♭', '♯'], vw = innerWidth, vh = innerHeight;
+    for (let i = 0; i < 90; i++) {
+      const n = document.createElement('span'); n.className = 'note';
+      n.textContent = sym[i % sym.length];
+      const a = rand(0, Math.PI * 2), d = rand(.2, 1) * Math.max(vw, vh) * .85;
+      n.style.cssText = `font-size:${rand(22, 64)}px;--x:${cx || vw / 2}px;--y:${cy || vh / 2}px;` +
+        `--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px;--r:${rand(-70, 70)}deg;--s:${rand(.9, 1.7)};animation-delay:${rand(0, .5)}s`;
+      $('#intro').appendChild(n);
+    }
+  }
+  function fadeIn(a) {
+    let v = 0; const iv = setInterval(() => { v = Math.min(v + .03, .8); a.volume = v; if (v >= .8) clearInterval(iv); }, 120);
+  }
+
+  /* ---------- Polaroid ---------- */
+  const stage = $('#stage'), polas = [];
+  for (let i = 1; i <= 5; i++) {
+    const d = document.createElement('div'); d.className = 'pola';
+    d.innerHTML = `<img src="foto${i}.png" alt="Foto ${i}" draggable="false">`;
+    d.dataset.rot = rand(-12, 12).toFixed(1); stage.appendChild(d); polas.push(d); drag(d);
+  }
+  function layoutPolas() {
+    const W = stage.clientWidth, H = stage.clientHeight;
+    polas.forEach(p => {
+      const w = p.offsetWidth, h = p.offsetHeight;
+      p.style.left = rand(0, Math.max(0, W - w)) + 'px';
+      p.style.top = rand(0, Math.max(0, H - h)) + 'px';
+      p.style.transform = `rotate(${p.dataset.rot}deg)`;
+    });
+  }
+  let zTop = 10;
+  function drag(el) {
+    let sx, sy, ox, oy, id = null;
+    el.addEventListener('pointerdown', e => {
+      id = e.pointerId; el.setPointerCapture(id);
+      sx = e.clientX; sy = e.clientY; ox = el.offsetLeft; oy = el.offsetTop;
+      el.style.zIndex = ++zTop; el.classList.add('lift');
+      el.style.transform = `rotate(${el.dataset.rot}deg) scale(1.07)`;
+      e.preventDefault();
+    });
+    el.addEventListener('pointermove', e => {
+      if (e.pointerId !== id) return;
+      const W = stage.clientWidth, H = stage.clientHeight;
+      const x = Math.min(Math.max(ox + e.clientX - sx, -el.offsetWidth * .3), W - el.offsetWidth * .7);
+      const y = Math.min(Math.max(oy + e.clientY - sy, -el.offsetHeight * .3), H - el.offsetHeight * .7);
+      el.style.left = x + 'px'; el.style.top = y + 'px';
+    });
+    const end = e => {
+      if (e.pointerId !== id) return; id = null;
+      el.classList.remove('lift'); el.style.transform = `rotate(${el.dataset.rot}deg)`;
+    };
+    el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+    el.addEventListener('contextmenu', e => e.preventDefault());
+  }
+  addEventListener('resize', () => polas.forEach(p => {
+    const W = stage.clientWidth - p.offsetWidth;
+    if (p.offsetLeft > W) p.style.left = Math.max(0, W) + 'px';
+  }));
+
+  /* ---------- Luar angkasa ---------- */
+  const space = $('#space');
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement('i'), z = rand(1, 3);
+    s.className = 'star';
+    s.style.cssText = `left:${rand(0, 100)}%;top:${rand(0, 100)}%;width:${z}px;height:${z}px;--d:${rand(1.5, 4)}s;--dl:${rand(0, 4)}s`;
+    space.prepend(s);
+  }
+  const eimg = $('#earthImg');
+  eimg.addEventListener('error', () => { if (!eimg.dataset.tried) { eimg.dataset.tried = 1; eimg.src = 'bumi.png'; } });
+
+  const walker = $('#walker'), body = $('#body'), chase = $('#chase');
+  let ang = 0, dir = 0, face = 1, last = 0, raf = null;
+  const render = () => { walker.style.transform = `rotate(${ang}deg)`; chase.style.transform = `scaleX(${face})`; };
+  function loop(t) {
+    const dt = Math.min((t - last) / 1000, .05); last = t;
+    if (dir) { ang = Math.max(-90, Math.min(90, ang + dir * 75 * dt)); face = dir; render(); }
+    raf = dir ? requestAnimationFrame(loop) : null;
+  }
+  function go(d, btn) {
+    dir = d; body.classList.toggle('walking', !!d);
+    btn && btn.classList.toggle('hold', !!d);
+    if (d && !raf) { last = performance.now(); raf = requestAnimationFrame(loop); }
+  }
+  [['#left', -1], ['#right', 1]].forEach(([s, d]) => {
+    const b = $(s);
+    b.addEventListener('pointerdown', e => { b.setPointerCapture(e.pointerId); go(d, b); });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => b.addEventListener(ev, () => go(0, b)));
+    b.addEventListener('contextmenu', e => e.preventDefault());
+  });
+  addEventListener('keydown', e => { if (e.key === 'ArrowLeft') go(-1); if (e.key === 'ArrowRight') go(1); });
+  addEventListener('keyup', e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') go(0); });
+
+  body.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    body.classList.remove('jump'); void body.offsetWidth; body.classList.add('jump');
+    const r = body.getBoundingClientRect(), items = ['❤️', '✨', 'I love you, Cimi!','Aku gendut!','💖', '✨', '❤️'];
+    for (let i = 0; i < 5; i++) {
+      const f = document.createElement('span'); f.className = 'float';
+      f.textContent = items[Math.floor(Math.random() * items.length)];
+      f.style.cssText = `left:${r.left + r.width / 2 + rand(-20, 20)}px;top:${r.top + rand(-10, 20)}px;--dx:${rand(-50, 50)}px;animation-delay:${i * .08}s`;
+      document.body.appendChild(f); setTimeout(() => f.remove(), 2000);
+    }
+  });
+  body.addEventListener('animationend', e => { if (e.animationName === 'jump') body.classList.remove('jump'); });
+  render();
+})();
+</script>
+</body>
+</html>
